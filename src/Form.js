@@ -1,5 +1,23 @@
 import { useFormik } from "formik";
 
+const validate = (values) => {
+  const errors = {};
+
+  if (!values.name) {
+    errors.name = "შევსება აუცილებელია!";
+  } else if (values.name.length < 2) {
+    errors.name = "მინიმუმ 2 სიმბოლო!";
+  }
+
+  if (!values.email) {
+    errors.email = "შევსება აუცილებელია!";
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+    errors.email = "ემაილი არასწორია!";
+  }
+
+  return errors;
+};
+
 const Form = () => {
   const formik = useFormik({
     initialValues: {
@@ -10,6 +28,7 @@ const Form = () => {
       text: "",
       terms: false,
     },
+    validate,
     onSubmit: (values) => console.log(JSON.stringify(values, null, 2)),
   });
 
@@ -23,7 +42,11 @@ const Form = () => {
         type="text"
         value={formik.values.name}
         onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
       />
+      {formik.errors.name && formik.touched.name ? (
+        <div>{formik.errors.name}</div>
+      ) : null}
       <label htmlFor="email">ელ.ფოსტა</label>
       <input
         id="email"
@@ -31,7 +54,11 @@ const Form = () => {
         type="email"
         value={formik.values.email}
         onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
       />
+      {formik.errors.email && formik.touched.email ? (
+        <div>{formik.errors.email}</div>
+      ) : null}
       <label htmlFor="amount">რაოდენობა</label>
       <input
         id="amount"
@@ -39,6 +66,7 @@ const Form = () => {
         type="number"
         value={formik.values.amount}
         onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
       />
       <label htmlFor="currency">ვალუტა</label>
       <select
@@ -46,6 +74,7 @@ const Form = () => {
         name="currency"
         value={formik.values.currency}
         onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
       >
         <option value="">აირჩიეთ ვალუტა</option>
         <option value="GEL">GEL</option>
@@ -58,6 +87,7 @@ const Form = () => {
         name="text"
         value={formik.values.text}
         onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
       />
       <label className="checkbox">
         <input
@@ -65,6 +95,7 @@ const Form = () => {
           type="checkbox"
           value={formik.values.terms}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
         ეთანხმებით კონფიდენციალობის დაცვის პოლიტიკას?
       </label>
