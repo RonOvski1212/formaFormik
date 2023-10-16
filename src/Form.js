@@ -1,22 +1,5 @@
 import { useFormik } from "formik";
-
-const validate = (values) => {
-  const errors = {};
-
-  if (!values.name) {
-    errors.name = "შევსება აუცილებელია!";
-  } else if (values.name.length < 2) {
-    errors.name = "მინიმუმ 2 სიმბოლო!";
-  }
-
-  if (!values.email) {
-    errors.email = "შევსება აუცილებელია!";
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-    errors.email = "ემაილი არასწორია!";
-  }
-
-  return errors;
-};
+import * as Yup from "yup";
 
 const Form = () => {
   const formik = useFormik({
@@ -28,7 +11,22 @@ const Form = () => {
       text: "",
       terms: false,
     },
-    validate,
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .min(3, "მინიმუმ 3 სიმბოლო!")
+        .required("აუცილებლად შეავსეთ!"),
+      email: Yup.string()
+        .email("ემაილი არასწორია")
+        .required("აუცილებლად შეავსეთ!"),
+      amount: Yup.number()
+        .min(5, "არანაკლებ 5 ერთეული")
+        .required("აუცილებლად შეავსეთ!"),
+      currency: Yup.string().required("აირჩიეთ ვალუტა"),
+      text: Yup.string().min(10, "არანაკლებ 10 სიმბოლო"),
+      terms: Yup.boolean()
+        .required("დათანხმება აუცილებელია!")
+        .oneOf([true], "დათანხმება აუცილებელია!"),
+    }),
     onSubmit: (values) => console.log(JSON.stringify(values, null, 2)),
   });
 
@@ -68,6 +66,9 @@ const Form = () => {
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
       />
+      {formik.errors.amount && formik.touched.amount ? (
+        <div>{formik.errors.amount}</div>
+      ) : null}
       <label htmlFor="currency">ვალუტა</label>
       <select
         id="currency"
@@ -81,6 +82,9 @@ const Form = () => {
         <option value="USD">USD</option>
         <option value="EUR">EUR</option>
       </select>
+      {formik.errors.currency && formik.touched.currency ? (
+        <div>{formik.errors.currency}</div>
+      ) : null}
       <label htmlFor="text">თქვენი ტექსტი</label>
       <textarea
         id="text"
@@ -89,6 +93,9 @@ const Form = () => {
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
       />
+      {formik.errors.text && formik.touched.text ? (
+        <div>{formik.errors.text}</div>
+      ) : null}
       <label className="checkbox">
         <input
           name="terms"
@@ -99,6 +106,9 @@ const Form = () => {
         />
         ეთანხმებით კონფიდენციალობის დაცვის პოლიტიკას?
       </label>
+      {formik.errors.terms && formik.touched.terms ? (
+        <div>{formik.errors.terms}</div>
+      ) : null}
       <button type="submit">გაგზავნა</button>
     </form>
   );
