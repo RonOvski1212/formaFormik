@@ -43,7 +43,7 @@ const Form = () => {
         onBlur={formik.handleBlur}
       />
       {formik.errors.name && formik.touched.name ? (
-        <div>{formik.errors.name}</div>
+        <div className="error">{formik.errors.name}</div>
       ) : null}
       <label htmlFor="email">ელ.ფოსტა</label>
       <input
@@ -55,7 +55,7 @@ const Form = () => {
         onBlur={formik.handleBlur}
       />
       {formik.errors.email && formik.touched.email ? (
-        <div>{formik.errors.email}</div>
+        <div className="error">{formik.errors.email}</div>
       ) : null}
       <label htmlFor="amount">რაოდენობა</label>
       <input
@@ -67,7 +67,7 @@ const Form = () => {
         onBlur={formik.handleBlur}
       />
       {formik.errors.amount && formik.touched.amount ? (
-        <div>{formik.errors.amount}</div>
+        <div className="error">{formik.errors.amount}</div>
       ) : null}
       <label htmlFor="currency">ვალუტა</label>
       <select
@@ -83,7 +83,7 @@ const Form = () => {
         <option value="EUR">EUR</option>
       </select>
       {formik.errors.currency && formik.touched.currency ? (
-        <div>{formik.errors.currency}</div>
+        <div className="error">{formik.errors.currency}</div>
       ) : null}
       <label htmlFor="text">თქვენი ტექსტი</label>
       <textarea
@@ -94,7 +94,7 @@ const Form = () => {
         onBlur={formik.handleBlur}
       />
       {formik.errors.text && formik.touched.text ? (
-        <div>{formik.errors.text}</div>
+        <div className="error">{formik.errors.text}</div>
       ) : null}
       <label className="checkbox">
         <input
@@ -107,7 +107,7 @@ const Form = () => {
         ეთანხმებით კონფიდენციალობის დაცვის პოლიტიკას?
       </label>
       {formik.errors.terms && formik.touched.terms ? (
-        <div>{formik.errors.terms}</div>
+        <div className="error">{formik.errors.terms}</div>
       ) : null}
       <button type="submit">გაგზავნა</button>
     </form>
